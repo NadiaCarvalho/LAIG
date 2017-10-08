@@ -1,66 +1,88 @@
 /**
-* CylinderSurface
-* @constructor
-*/
-function CylinderSurface(scene, base, top, height, slices, stacks) {
-	CGFobject.call(this,scene);
-
+ * MyCylinder * @constructor
+ */
+ function MyCylinder(scene, height, base, top, stacks, slices) {
+ 	CGFobject.call(this,scene);
+	
+	this.height = height;
 	this.base = base;
 	this.top = top;
-	this.height = height;
 	this.slices = slices;
 	this.stacks = stacks;
+ 	this.initBuffers();
+ };
 
-	this.initBuffers();
-};
+ MyCylinder.prototype = Object.create(CGFobject.prototype);
+ MyCylinder.prototype.constructor = MyCylinder;
 
-CylinderSurface.prototype = Object.create(CGFobject.prototype);
-CylinderSurface.prototype.constructor = CylinderSurface;
+ MyCylinder.prototype.initBuffers = function() {
+ 	/*
+ 	* TODO:
+ 	* Replace the following lines in order to build a prism with a **single mesh**.
+ 	*
+ 	* How can the vertices, indices and normals arrays be defined to
+ 	* build a prism with varying number of slices and stacks?
+ 	*/
 
-CylinderSurface.prototype.initBuffers = function() {
+ 	this.vertices = [];
+ 	this.indices = [];
+ 	this.normals = [];
+ 	this.texCoords = [];
 
+	var degToRad = Math.PI / 180.0;
+	
+	var ang = 360/this.slices;
 
-	this.vertices = [];
-	this.indices = [];
-	this.normals = [];
-	this.texCoords = [];
+	var parts = 1.0/this.stacks;
 
-
-	var angle = 2*Math.PI/this.slices;
-	var zRatio = this.height / this.stacks;
 	var radiusRatio = (this.top - this.base) / this.stacks;
 
+	for(var i = 0; i < this.slices; i++){
+			this.vertices.push(this.base*Math.cos((ang*i)*degToRad),
+								this.base*Math.sin((ang*i)*degToRad),
+								0);
+			this.normals.push(this.base*Math.cos(ang*i*degToRad),
+								this.base*Math.sin(ang*i*degToRad),
+								0);
+			
+			var t = 1 - (i / this.slices);
+			this.texCoords.push(1, t);
+	}
+ 	for(var j = 0; j < this.stacks; j++){
+		var radius = this.base - (j+1)*radiusRatio;
 
-	for (var stack = 0; stack <= this.stacks; stack++) {
-		var z = stack * zRatio;
-		var radius = this.base + stack * radiusRatio;
+ 		for(i = 0; i < this.slices; i++){
+			this.vertices.push(radius*Math.cos((ang*i)*degToRad),
+								radius*Math.sin((ang*i)*degToRad),
+								parts*(j+1)*this.height);
 
-		for (var slice = 0; slice < this.slices; slice++) {
-			var x = radius * Math.cos(slice * angle);
-			var y = radius * Math.sin(slice * angle);
-			var s = 1 - (stack / this.stacks);
-			var t = 1 - (slice / this.slices);
-
-			this.vertices.push(x, y, z);
-			this.normals.push(x, y, 0);
+			var s = 1 - (j / this.stacks);
+			var t = 1 - (i / this.slices);
 			this.texCoords.push(s, t);
-		}
-	}
+			
+			if(i != this.slices-1){
+				this.indices.push(j*this.slices+i,
+								 1+(j*this.slices)+i,
+								 (j+1)*this.slices+i);
+				this.indices.push(1+(j+1)*this.slices+i,
+								 (j+1)*this.slices+i,
+								 1+(j*this.slices)+i);
+			}
+			else{
+				this.indices.push(j*this.slices+i,
+								 j*this.slices,
+								 (j+1)*this.slices+i);
+				this.indices.push((j+1)*this.slices,
+								 (j+1)*this.slices+i,
+								 j*this.slices);	
+			}
+				
+			this.normals.push(radius*Math.cos(ang*i*degToRad),
+								radius*Math.sin(ang*i*degToRad),
+								0);
+ 		}
+ 	}
 
-
-	for (var stack = 0; stack < this.stacks; stack++) {
-		for (var slice = 0; slice < this.slices-1; slice++) {
-			var first = (stack * this.slices) + slice;
-			var second = first + this.slices + 1;
-
-			this.indices.push(first, second, second-1);
-			this.indices.push(first, first + 1, second);
-		}
-		this.indices.push(stack*this.slices, stack*this.slices*2-1, stack*this.slices-1);
-    	this.indices.push(stack*this.slices, stack*this.slices-1, (stack-1)*this.slices);
-	}
-
-
-	this.primitiveType = this.scene.gl.TRIANGLES;
-	this.initGLBuffers();
-};
+ 	this.primitiveType = this.scene.gl.TRIANGLES;
+ 	this.initGLBuffers();
+ };

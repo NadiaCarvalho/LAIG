@@ -5,7 +5,7 @@
 function Cylinder(scene, height, base, top, stacks, slices) {
 	CGFobject.call(this,scene);
 
-	this.surface = new CylinderSurface(scene, base, top, height, slices, stacks);
+	this.surface = new MyCylinder(scene, height, base, top, stacks, slices);
 	this.base = new CylinderBase(scene, base, slices);
 	this.top = new CylinderBase(scene, top, slices);
 };

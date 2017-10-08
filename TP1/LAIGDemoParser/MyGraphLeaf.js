@@ -29,5 +29,9 @@ MyGraphLeaf.prototype.display = function() {
         this.triangle = new triangle(this.graph.scene, this.array[0], this.array[1], this.array[2], this.array[3], this.array[4], this.array[5], this.array[6], this.array[7], this.array[8]);
         this.triangle.display();
     }
+    else if(this.type == 'sphere'){
+        this.sphere = new Sphere(this.graph.scene, this.array[0], this.array[1], this.array[2]);
+        this.sphere.display();
+    }
 }
 
