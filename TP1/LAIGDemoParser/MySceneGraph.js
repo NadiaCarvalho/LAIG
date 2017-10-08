@@ -1426,13 +1426,15 @@ MySceneGraph.prototype.displayScene = function(nodeID) {
 	// remove log below to avoid performance issues
 
     var material = this.materials[this.defaultMaterialID];
+    if(material == null)
+     console.log("material is null");
     var texture;
     var node = this.nodes[nodeID];
 
     if(node != null){
         if(node.materialID != null)
-            material = this.materials[node.materialID];
-
+            if(this.materials[node.materialID] != null)
+                material = this.materials[node.materialID];
         this.scene.multMatrix(node.transformMatrix);
 
         for(var i = 0; i < node.children.length; i++){
@@ -1441,10 +1443,8 @@ MySceneGraph.prototype.displayScene = function(nodeID) {
             this.displayScene(node.children[i]);
             this.scene.popMatrix();
         }
-        if(node.leaf != null){
-            node.leaf.display();
-            console.log("displaying leaf");
-        }
+        for(var i = 0; i < node.leaves.length; i++)
+            node.leaves[i].display();
     }
     else
         console.log("node is null");

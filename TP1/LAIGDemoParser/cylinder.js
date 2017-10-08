@@ -2,15 +2,17 @@
  * cylinder
  * @constructor
  */
- function cylinder(scene, h, br, tr, sections, parts) {
+ function cylinder(scene, height, botR, topR, stacks, slices, topCap, botCap) {
  	CGFobject.call(this,scene);
 	
 	this.scece = scene;
-	this.h = h;
-	this.br = br;
-	this.tr = tr;
-	this.section = sections;
-	this.parts = parts;
+	this.height = height;
+	this.botR = botR;
+	this.topR = topR;
+	this.stacks = stacks;
+	this.slices = slices;
+	this.topCap = topCap;
+	this.botCap = botCap;
 
  	this.initBuffers();
  };
@@ -20,31 +22,35 @@
 
  cylinder.prototype.initBuffers = function() {
 
+	var angle = 2*Math.PI/this.slices;
     this.vertices = [];
-
- 	for(i = 0; i < this.sections; i++){
- 	    var angle = i*(2*Math.PI/this.slices);
- 	    this.vertices.push(Math.cos(angle), Math.sin(angle), 0.5);
- 	    this.vertices.push(Math.cos(angle), Math.sin(angle), -0.5);
- 	}
-
-    this.indices = [];
-
- 	for(i = 0; i < this.slices-1; i++){
-        this.indices.push(0+i*2, 2+i*2, 1+i*2);
-        this.indices.push(3+i*2, 1+i*2, 2+i*2);
- 	}
-
- 	this.indices.push(this.slices-1, 0, this.slices);
-    this.indices.push(1, this.slices, 0);
-
- 	this.normals = [];
+	this.indices = [];
+	this.normals = [];
 
  	for(i = 0; i < this.slices; i++){
- 	    this.normals.push(i*(2*Math.PI/this.slices));
- 	    this.normals.push(i*(2*Math.PI/this.slices));
+ 	    this.vertices.push(this.botR * Math.cos(i*angle), this.botR * Math.sin(i*angle), 0);
+ 	    this.normals.push(i*(angle));
  	}
 
+ 	for(i = 1; i <= this.stacks; i++){
+ 		var radius = this.botR - i*((this.botR-this.topR)/this.stacks);
+
+ 		for(j = 0; j < this.slices; j++){
+ 			this.vertices.push(radius * Math.cos(j*angle), radius * Math.sin(j*angle), j*this.height/this.stacks);
+ 		}
+
+ 		for(j = 0; j < this.slices-1; j++){
+			this.indices.push(i*this.slices+j+1, i*this.slices+j, j);
+			this.indices.push(i*this.slices+j+1, j, j+1);
+ 		}
+ 		this.indices.push(i*this.slices, i*this.slices*2-1, i*this.slices-1);
+    	this.indices.push(i*this.slices, i*this.slices-1, (i-1)*this.slices);
+
+    	for(j = 0; j < this.slices; j++){
+			this.normals.push(j*(angle));
+ 		}
+ 	}
+ 	
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
  };

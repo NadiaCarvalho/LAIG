@@ -21,13 +21,13 @@ rectangle.prototype.initBuffers = function () {
 	this.vertices = [
             this.a, this.b, 0,
             this.c, this.b, 0,
-            this.c, this.d, 0,
-            this.a, this.d, 0
+            this.a, this.d, 0,
+            this.c, this.d, 0
 			];
 
 	this.indices = [
-            0, 1, 2,
-            3, 2, 1
+            0, 2, 1,
+            1, 2, 3
         ];		
 
      this.normals = [
