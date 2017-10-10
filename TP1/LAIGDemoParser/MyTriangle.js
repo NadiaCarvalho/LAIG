@@ -34,6 +34,11 @@ triangle.prototype.initBuffers = function () {
 	this.indices = [
             0, 1, 2
         ];
+    this.texCoords = [
+			0.5, 0,
+			0, 1,
+			1, 0
+    ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();

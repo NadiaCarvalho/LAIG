@@ -1421,30 +1421,49 @@ MySceneGraph.generateRandomString = function(length) {
 /**
  * Displays the scene, processing each node, starting in the root node.
  */
-MySceneGraph.prototype.displayScene = function(nodeID) {
+MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
 	// entry point for graph rendering
 	// remove log below to avoid performance issues
 
-    var material = this.materials[this.defaultMaterialID];
-    if(material == null)
-     console.log("material is null");
-    var texture;
+    var materialID = matID;
+    var textureID = texID;
     var node = this.nodes[nodeID];
+    var texture;
 
     if(node != null){
-        if(node.materialID != null)
+        if(node.materialID != "null")
             if(this.materials[node.materialID] != null)
-                material = this.materials[node.materialID];
+                materialID = node.materialID;
+
+        if(node.textureID == "clear")
+            texture = "clear";
+        else if(node.textureID == "null")
+            if(this.textures[textureID] != null)
+                texture = this.textures[textureID][0];
+             else
+                texture = null;
+        else{
+            texture = this.textures[node.textureID][0];
+            textureID = node.textureID;
+        }
+
         this.scene.multMatrix(node.transformMatrix);
 
+        var material = this.materials[materialID];
+        if(texture == "clear")
+            material.setTexture(null);
+        else
+            material.setTexture(texture);
+        for(var i = 0; i < node.leaves.length; i++){
+            material.apply();
+            node.leaves[i].display();
+        }
         for(var i = 0; i < node.children.length; i++){
             this.scene.pushMatrix();
-            material.apply();
-            this.displayScene(node.children[i]);
+            this.displayScene(node.children[i], materialID, textureID);
             this.scene.popMatrix();
         }
-        for(var i = 0; i < node.leaves.length; i++)
-            node.leaves[i].display();
+        
     }
     else
         console.log("node is null");

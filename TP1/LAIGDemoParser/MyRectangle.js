@@ -30,12 +30,19 @@ rectangle.prototype.initBuffers = function () {
             1, 2, 3
         ];		
 
-     this.normals = [
+    this.normals = [
  	        0, 0, 1,
  	        0, 0, 1,
  	        0, 0, 1,
  	        0, 0, 1
  	    ];
+
+ 	this.texCoords = [
+ 			0, 0,
+ 			1, 0,
+ 			0, 1,
+ 			1, 1
+ 	];
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
