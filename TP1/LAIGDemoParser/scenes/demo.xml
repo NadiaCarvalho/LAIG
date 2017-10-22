@@ -114,16 +114,6 @@
         <file path="images/desk_wood.jpg" />                
         <amplif_factor s="1" t="1" />                           
     </TEXTURE>
-
-    <TEXTURE id="chair">
-        <file path="images/chair.jpg" />                
-        <amplif_factor s="1" t="1" />                           
-    </TEXTURE>
-
-    <TEXTURE id="chair_leg">
-        <file path="images/chair_leg.jpg" />                
-        <amplif_factor s="1" t="1" />                           
-    </TEXTURE>
 </TEXTURES>
 
 
@@ -474,7 +464,7 @@ X
 
     <NODE id="chair">
         <MATERIAL id="null" />    
-        <TEXTURE id="chair" />
+        <TEXTURE id="null" />
 
         <TRANSLATION x="0" y="0" z="3"/>
 
@@ -576,7 +566,7 @@ X
 
     <NODE id="c_legs">
         <MATERIAL id="null" />    
-        <TEXTURE id="chair_leg" />
+        <TEXTURE id="null" />
 
         <DESCENDANTS>
             <NODEREF id="c_leg1"/>
