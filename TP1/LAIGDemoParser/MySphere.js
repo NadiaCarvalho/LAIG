@@ -49,7 +49,7 @@ Sphere.prototype.initBuffers = function() {
     this.texCoords.push(0, 0);
 
     for (var stack = 0; stack < this.stacks; stack++) {
-        for (var slice = 0; slice < this.slices; slice++) {
+        for (var slice = 0; slice < this.slices-1; slice++) {
             if(stack == 0){
                 this.indices.push(0, slice+1, slice+2);
             }
@@ -67,11 +67,19 @@ Sphere.prototype.initBuffers = function() {
             }
         }
         if(stack == 0){
-            this.indices.push(0, this.slices+1, 1);
+            this.indices.push(0, this.slices, 1);
         }
         else if(stack == this.stacks-1){
             var last = 1+this.slices*(this.stacks-1);
             this.indices.push(last, last-this.slices, last-1);
+        }
+        else {
+        	this.indices.push(stack*this.slices,
+        					(stack+1)*this.slices,
+        					(stack-1)*this.slices+1);
+        	this.indices.push((stack-1)*this.slices+1,
+        					(stack+1)*this.slices,
+        					stack*this.slices+1);
         }
     }
 

@@ -136,10 +136,8 @@ XMLscene.prototype.display = function() {
 
         // Displays the scene.
         this.graph.displayScene("root");
-        this.triangle = new triangle(this,0,0.5,1, 0,0,0, 0,1,0,0.5,1);
         this.graph.materials[this.graph.defaultMaterialID].setTexture(this.graph.textures["vidral"][0]);
         this.graph.materials[this.graph.defaultMaterialID].apply();
-        this.triangle.display();
     } else {
         // Draw axis
         this.axis.display();
