@@ -67,7 +67,7 @@ Sphere.prototype.initBuffers = function() {
             }
         }
         if(stack == 0){
-            this.indices.push(0, this.slices, 1);
+            this.indices.push(0, this.slices+1, 1);
         }
         else if(stack == this.stacks-1){
             var last = 1+this.slices*(this.stacks-1);

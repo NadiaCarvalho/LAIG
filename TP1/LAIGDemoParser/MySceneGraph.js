@@ -1429,6 +1429,8 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
     var textureID = texID;
     var node = this.nodes[nodeID];
     var texture;
+    var ampS;
+    var ampT;
 
     if(node != null){
         if(node.materialID != "null")
@@ -1438,12 +1440,17 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         if(node.textureID == "clear")
             texture = "clear";
         else if(node.textureID == "null")
-            if(this.textures[textureID] != null)
+            if(this.textures[textureID] != null){
                 texture = this.textures[textureID][0];
+                ampS = this.textures[textureID][1];
+                ampT = this.textures[textureID][2];
+            }
              else
                 texture = null;
         else{
             texture = this.textures[node.textureID][0];
+            ampS = this.textures[node.textureID][1];
+                ampT = this.textures[node.textureID][2];
             textureID = node.textureID;
         }
 
@@ -1456,6 +1463,8 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
             material.setTexture(texture);
         for(var i = 0; i < node.leaves.length; i++){
             material.apply();
+            node.leaves[i].ampS = ampS;
+            node.leaves[i].ampT = ampT;
             node.leaves[i].display();
         }
         for(var i = 0; i < node.children.length; i++){

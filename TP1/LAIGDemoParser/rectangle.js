@@ -3,16 +3,13 @@
  * @param gl {WebGLRenderingContext}
  * @constructor
  */
-function rectangle(scene, a, b, c, d, ampS, ampT) {
+function rectangle(scene, a, b, c, d) {
 	CGFobject.call(this,scene);
 
 	this.a = a;
 	this.b = b;
 	this.c = c;
 	this.d = d;
-
-	this.ampS = ampS;
-	this.ampT = ampT;	
 
 	this.initBuffers();
 };
@@ -41,11 +38,13 @@ rectangle.prototype.initBuffers = function () {
  	    ];
 
  	this.texCoords = [
- 			0, 1-(this.d-this.b)/this.ampT,
- 			(this.c-this.a)/this.ampS, 1-(this.d-this.b)/this.ampT,
- 			0, 1,
- 			(this.c-this.a)/this.ampS, 1
- 	];
+			1,0,
+			0,0,
+			1,1,
+			0,1,
+ 		];
+
+
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
