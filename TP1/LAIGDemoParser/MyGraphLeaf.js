@@ -7,7 +7,7 @@ function MyGraphLeaf(graph, xmlelem) {
     this.graph = graph;
     this.ampS;
     this.ampT;
-    this.type = this.graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle']);
+    this.type = this.graph.reader.getItem(xmlelem, 'type', ['rectangle', 'cylinder', 'sphere', 'triangle', 'patch']);
     this.args = this.graph.reader.getString(xmlelem, 'args');
     if(this.args == null)
         console.log("Error in args");
@@ -34,6 +34,10 @@ MyGraphLeaf.prototype.display = function() {
     else if(this.type == 'sphere'){
         this.sphere = new Sphere(this.graph.scene, this.array[0], this.array[1], this.array[2]);
         this.sphere.display();
+    }
+    else if(this.type =='patch'){
+        this.patch = new Patch(this.graph.scene, this.array[0], this.array[1], this.array[2], this.array[3], this.array[4]);
+        //this.patch.display();
     }
 }
 
