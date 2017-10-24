@@ -114,12 +114,15 @@
         <file path="images/desk_wood.jpg" />                
         <amplif_factor s="1" t="1" />                           
     </TEXTURE>
+<<<<<<< HEAD
 	<!--FEUP Logo -->
     <TEXTURE id="feup">
         <file path="images/feup.jpg" />                
         <amplif_factor s="0.5" t="0.5" />                           
     </TEXTURE>
 
+=======
+>>>>>>> 98baee6514d8288fd4cd0bec1377592cffe091d8
 </TEXTURES>
 
 
@@ -210,7 +213,11 @@
     <!-- The floor -->
     <NODE id="chao">      
         <MATERIAL id="null" />    
+<<<<<<< HEAD
         <TEXTURE id="feup" />       			
+=======
+        <TEXTURE id="floor_wood" />       			
+>>>>>>> 98baee6514d8288fd4cd0bec1377592cffe091d8
 
         <SCALE sx="8" sy="1" sz="7" />
         <TRANSLATION x="0" y="0" z="3" />
@@ -358,8 +365,13 @@ X
 	</NODE>
 
 	<NODE id="t_leg1">
+<<<<<<< HEAD
 		<MATERIAL id="WallMaterial" />    
         <TEXTURE id="feup" />
+=======
+		<MATERIAL id="null" />    
+        <TEXTURE id="null" />
+>>>>>>> 98baee6514d8288fd4cd0bec1377592cffe091d8
 
         <TRANSLATION x="0" y="0" z="-5"/>
 		
@@ -718,7 +730,11 @@ X
 
     <NODE id="l_base">
         <MATERIAL id="null" />    
+<<<<<<< HEAD
         <TEXTURE id="feup" />
+=======
+        <TEXTURE id="metal" />
+>>>>>>> 98baee6514d8288fd4cd0bec1377592cffe091d8
 
         <TRANSLATION x="8" y="0.25" z="11" />
         <SCALE sx="1.5" sy="0.25" sz="1.5"/>
