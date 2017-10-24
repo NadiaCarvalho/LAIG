@@ -32,9 +32,9 @@ Sphere.prototype.initBuffers = function() {
             var sinPhi = Math.sin(phi);
             var cosPhi = Math.cos(phi);
 
-            var x = this.radius * cosPhi * cosTheta;
-            var y = this.radius * sinPhi * cosTheta;
-            var z = this.radius * sinTheta;
+            var x = this.radius * cosPhi * sinTheta;
+            var y = this.radius * sinPhi * sinTheta;
+            var z = this.radius * cosTheta;
             var s = 1 - (stack / this.stacks);
             var t = 1 - (slice / this.slices);
 

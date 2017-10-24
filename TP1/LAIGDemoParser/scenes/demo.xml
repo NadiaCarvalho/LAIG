@@ -86,6 +86,12 @@
         <file path="images/bank.jpg" />                
         <amplif_factor s="1" t="1" />                           
     </TEXTURE>
+<!--FEUP Logo -->
+    <TEXTURE id="feup">
+        <file path="images/feup.jpg" />                
+        <amplif_factor s="5" t="5" />                           
+    </TEXTURE>
+
     
 </TEXTURES>
 
@@ -521,7 +527,7 @@
     <NODE id="piramide">       
 
         <MATERIAL id="null" />      
-        <TEXTURE id="vidral" />       			
+        <TEXTURE id="feup" />       			
 
         <TRANSLATION x="12" y="5.8" z="4.75" />
         <SCALE sx="0.4" sy="2" sz="0.4" />
@@ -616,6 +622,21 @@
         </DESCENDANTS>
 
     </NODE>
+
+	<!-- A Patch 
+    <NODE id="patch">      
+        <MATERIAL id="null" />      
+        <TEXTURE id="null" />       		
+
+        <DESCENDANTS>
+					<LEAF id="patch" type="patch" args="1, 1">
+						<CPLINE>
+							<CPOINT> xx="" yy="" zz="" ww="" />
+						<CPLINE/>
+					<LEAF/>
+        </DESCENDANTS>
+
+    </NODE>-->
 
 </NODES>
 

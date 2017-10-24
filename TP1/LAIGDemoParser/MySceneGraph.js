@@ -1450,7 +1450,7 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         else{
             texture = this.textures[node.textureID][0];
             ampS = this.textures[node.textureID][1];
-                ampT = this.textures[node.textureID][2];
+            ampT = this.textures[node.textureID][2];
             textureID = node.textureID;
         }
 
@@ -1463,9 +1463,7 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
             material.setTexture(texture);
         for(var i = 0; i < node.leaves.length; i++){
             material.apply();
-            node.leaves[i].ampS = ampS;
-            node.leaves[i].ampT = ampT;
-            node.leaves[i].display();
+            node.leaves[i].display(ampS, ampT);
         }
         for(var i = 0; i < node.children.length; i++){
             this.scene.pushMatrix();

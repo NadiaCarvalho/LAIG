@@ -53,9 +53,9 @@ triangle.prototype.initBuffers = function () {
             0, 1, 2
         ];
     this.texCoords = [
-			(c-a*cos)/this.ampS, 1-(a*Math.sin(beta))/this.ampT,
 			0, 1,
-			c/this.ampS, 1
+			c/this.ampS, 1,
+			(c-a*cos)/this.ampS, 1-(a*Math.sin(beta))/this.ampT
     ];
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
