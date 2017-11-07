@@ -2,7 +2,7 @@
 * CircularAnimation
 * @constructor
 */
-function CircularAnimation(scene) extends Animation{
+function CircularAnimation(scene){
 	CGFobject.call(this,scene);
 
 };
