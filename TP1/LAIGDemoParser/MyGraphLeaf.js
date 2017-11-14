@@ -41,7 +41,6 @@ MyGraphLeaf.prototype.constructor = MyGraphLeaf;
 
 MyGraphLeaf.prototype.display = function(ampS, ampT) {
     if(ampS != this.ampS || ampT != this.ampT){
-        console.log("new ampfs", ampS, this.ampS, this.type);
         this.ampS = ampS;
         this.ampT = ampT;
         if(this.type == 'rectangle'){

@@ -6,8 +6,9 @@ var ILLUMINATION_INDEX = 1;
 var LIGHTS_INDEX = 2;
 var TEXTURES_INDEX = 3;
 var MATERIALS_INDEX = 4;
-var LEAVES_INDEX = 5;
-var NODES_INDEX = 6;
+var ANIMATIONS_INDEX = 5;
+var LEAVES_INDEX = 6;
+var NODES_INDEX = 7;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -139,6 +140,17 @@ MySceneGraph.prototype.parseLSXFile = function(rootElement) {
             return error;
     }
     
+    // <ANIMATIONS>
+    if ((index = nodeNames.indexOf("ANIMATIONS")) == -1)
+        return "tag <ANIMATIONS> missing";
+    else {
+        if (index != ANIMATIONS_INDEX)
+            this.onXMLMinorError("tag <ANIMATIONS> out of order");
+        
+        if ((error = this.parseAnimations(nodes[index])) != null )
+            return error;
+    }
+
     // <NODES>
     if ((index = nodeNames.indexOf("NODES")) == -1)
         return "tag <NODES> missing";
@@ -149,7 +161,6 @@ MySceneGraph.prototype.parseLSXFile = function(rootElement) {
         if ((error = this.parseNodes(nodes[index])) != null )
             return error;
     }
-
 }
 
 /**
@@ -1158,7 +1169,52 @@ MySceneGraph.prototype.parseMaterials = function(materialsNode) {
     console.log("Parsed materials");
 }
 
+/**
+ * Parses the <ANIMATIONS> node.
+ */
+MySceneGraph.prototype.parseAnimations = function(animationsNode) {
+    
+    var children = animationsNode.children;
+    // Each animation.
+    
+    this.animations = [];
 
+    for (var i = 0; i < children.length; i++) {
+        if (children[i].nodeName != "ANIMATION") {
+            this.onXMLMinorError("unknown tag name <" + children[i].nodeName + ">");
+            continue;
+        }
+        
+        var animationID = this.reader.getString(children[i], 'id');
+        if (animationID == null )
+            return "no ID defined for animation";
+        
+        if (this.animations[animationID] != null )
+            return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
+
+        var animationType = this.reader.getString(children[i], 'type');
+        if (animationType == null )
+            return "no Type defined for animation";
+        
+        if(animationType == "linear"){
+
+            var velocity = [this.reader.getFloat(children[i], 'speed'),
+                            this.reader.getFloat(children[i], 'speed'),
+                            this.reader.getFloat(children[i], 'speed')];
+
+            var animationSpecs = children[i].children;
+            var controlPoints = [];
+
+            for (var j = 0; j < animationSpecs.length; j++){
+                controlPoints.push([this.reader.getFloat(animationSpecs[j], 'xx'),
+                                    this.reader.getFloat(animationSpecs[j], 'yy'),
+                                    this.reader.getFloat(animationSpecs[j], 'zz')])
+            }
+            var newAnimation = new LinearAnimation(this.scene, controlPoints, velocity);
+            this.animations[animationID] = newAnimation;
+        }
+    }
+}
 /**
  * Parses the <NODES> block.
  */
@@ -1197,7 +1253,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             // Gathers child nodes.
             var nodeSpecs = children[i].children;
             var specsNames = [];
-            var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "DESCENDANTS"];
+            var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "ANIMATIONREFS", "DESCENDANTS"];
             for (var j = 0; j < nodeSpecs.length; j++) {
                 var name = nodeSpecs[j].nodeName;
                 specsNames.push(nodeSpecs[j].nodeName);
@@ -1311,7 +1367,25 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                     break;
                 }
             }
-            
+            // Retrieves information about animations.
+            var animationsIndex = specsNames.indexOf("ANIMATIONREFS");
+            if (animationsIndex != -1){
+
+                var animations = nodeSpecs[animationsIndex].children;
+
+                for (var j = 0; j < animations.length; j++) {
+                    if (descendants[j].nodeName == "ANIMATIONREF")
+				    {
+                    
+                        var animationId = this.reader.getString(descendants[j], 'id');
+
+                        if (animationId == null )
+                            this.onXMLMinorError("unable to parse animationRef id");
+
+                        this.nodes[nodeID].animations.push(this.animations[animationID]);
+                    }
+                }
+            }
             // Retrieves information about children.
             var descendantsIndex = specsNames.indexOf("DESCENDANTS");
             if (descendantsIndex == -1)
@@ -1467,7 +1541,11 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         }
         for(var i = 0; i < node.children.length; i++){
             this.scene.pushMatrix();
-            this.displayScene(node.children[i], materialID, textureID);
+                for(var j = 0; j < node.animation.length; j++)
+                    this.scene.translate(node.animations[j].getMatrix()[0],
+                                         node.animations[j].getMatrix()[1],
+                                         node.animations[j].getMatrix()[2]);
+                this.displayScene(node.children[i], materialID, textureID);
             this.scene.popMatrix();
         }
         
