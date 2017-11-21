@@ -92,8 +92,6 @@ XMLscene.prototype.onGraphLoaded = function() {
     // Adds lights group.
     this.interface.addLightsGroup(this.graph.lights);
 
-    this.sphere = new Sphere(this, 1, 20, 20);
-    this.animation = new LinearAnimation(this, [[0,0,0],[10,0,0], [0,0,10], [0,10,0], [0,0,0]], [5,5,5]);
 }
 
 /**
@@ -138,14 +136,9 @@ XMLscene.prototype.display = function() {
         }
 
         // Displays the scene.
-        //this.graph.displayScene("root");
-        //this.graph.materials[this.graph.defaultMaterialID].setTexture(this.graph.textures["vidral"][0]);
-        //this.graph.materials[this.graph.defaultMaterialID].apply();
-    
-        this.translate(this.animation.getMatrix()[0],
-                       this.animation.getMatrix()[1],
-                       this.animation.getMatrix()[2]);
-        this.sphere.display();
+        this.graph.displayScene("root");
+        this.graph.materials[this.graph.defaultMaterialID].setTexture(this.graph.textures["vidral"][0]);
+        this.graph.materials[this.graph.defaultMaterialID].apply();
     } else {
         // Draw axis
         this.axis.display();

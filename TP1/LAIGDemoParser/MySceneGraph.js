@@ -1370,16 +1370,15 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             // Retrieves information about animations.
             var animationsIndex = specsNames.indexOf("ANIMATIONREFS");
             if (animationsIndex != -1){
-
                 var animations = nodeSpecs[animationsIndex].children;
 
                 for (var j = 0; j < animations.length; j++) {
-                    if (descendants[j].nodeName == "ANIMATIONREF")
-				    {
-                    
-                        var animationId = this.reader.getString(descendants[j], 'id');
+                    if (animations[j].nodeName == "ANIMATIONREF")
+                    {
 
-                        if (animationId == null )
+                        var animationID = this.reader.getString(animations[j], 'id');
+
+                        if (animationID == null )
                             this.onXMLMinorError("unable to parse animationRef id");
 
                         this.nodes[nodeID].animations.push(this.animations[animationID]);
@@ -1541,10 +1540,12 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         }
         for(var i = 0; i < node.children.length; i++){
             this.scene.pushMatrix();
-                for(var j = 0; j < node.animation.length; j++)
+                for(var j = 0; j < node.animations.length; j++){
                     this.scene.translate(node.animations[j].getMatrix()[0],
                                          node.animations[j].getMatrix()[1],
                                          node.animations[j].getMatrix()[2]);
+                    console.log(node.animations[j].getMatrix());
+                }
                 this.displayScene(node.children[i], materialID, textureID);
             this.scene.popMatrix();
         }
