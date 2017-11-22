@@ -162,6 +162,12 @@
 		<controlpoint xx="0" yy="0" zz="0" />
 	</ANIMATION>
 
+    <ANIMATION id="teste_circ" radius="5" angInit="0" angRot="20" speed="5.0" center_x="2.5" center_y="0" center_z="2.5" type="circular">
+    </ANIMATION>
+
+    <ANIMATION id="teste_circ2" radius="5" angInit="0" angRot="20" speed="-5.0" center_x="2.5" center_y="0" center_z="2.5" type="circular">
+    </ANIMATION>
+
 </ANIMATIONS>
 
 <!-- The leaves -->
@@ -316,7 +322,7 @@
         <TEXTURE id="banco" />       			
 
 		<ANIMATIONREFS>
-			<ANIMATIONREF id="ss" />
+			<ANIMATIONREF id="teste" />
 		</ANIMATIONREFS>
 		
         <DESCENDANTS>
@@ -375,7 +381,9 @@
     <!-- Trees -->
     <NODE id="arvores">       
         <MATERIAL id="null" />     
-        <TEXTURE id="clear" />       			
+        <TEXTURE id="clear" />
+
+         			
 
         <DESCENDANTS>
             <NODEREF id="arvore1" />
@@ -389,6 +397,10 @@
         <MATERIAL id="null" />    
         <TEXTURE id="null" />       			
 
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="teste_circ2" />
+        </ANIMATIONREFS>   
+
         <TRANSLATION x="-2" y="0" z="5" />
 
         <DESCENDANTS>
@@ -400,7 +412,11 @@
     <!-- Another tree -->
     <NODE id="arvore2">       
         <MATERIAL id="null" />     
-        <TEXTURE id="null" />       			
+        <TEXTURE id="null" />   
+
+        <ANIMATIONREFS>
+            <ANIMATIONREF id="teste_circ" />
+        </ANIMATIONREFS>       			
 
         <TRANSLATION x="22" y="0" z="5" />
 

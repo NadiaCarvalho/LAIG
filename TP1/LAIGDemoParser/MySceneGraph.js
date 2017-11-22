@@ -1212,6 +1212,22 @@ MySceneGraph.prototype.parseAnimations = function(animationsNode) {
             }
             var newAnimation = new LinearAnimation(this.scene, controlPoints, velocity);
             this.animations[animationID] = newAnimation;
+
+        }else if(animationType="circular"){
+
+            var radius = this.reader.getFloat(children[i], "radius");
+
+            var angInit = this.reader.getFloat(children[i], "angInit");
+
+            var angRot = this.reader.getFloat(children[i], "angRot");
+
+            var velocity = this.reader.getFloat(children[i], 'speed');
+
+            var center = [this.reader.getFloat(children[i], "center_x"),this.reader.getFloat(children[i], "center_y"),this.reader.getFloat(children[i], "center_z"),]
+
+            var newAnimation = new CircularAnimation(this.scene, radius, angInit, angRot, velocity, center);
+            this.animations[animationID] = newAnimation;
+
         }
     }
 }
@@ -1541,10 +1557,13 @@ MySceneGraph.prototype.displayScene = function(nodeID, matID, texID) {
         for(var i = 0; i < node.children.length; i++){
             this.scene.pushMatrix();
                 for(var j = 0; j < node.animations.length; j++){
-                    this.scene.translate(node.animations[j].getMatrix()[0],
-                                         node.animations[j].getMatrix()[1],
-                                         node.animations[j].getMatrix()[2]);
-                    console.log(node.animations[j].getMatrix());
+                   /* this.scene.translate(node.animations[j].getMatrix()[0], node.animations[j].getMatrix()[1], node.animations[j].getMatrix()[2]);*/
+                    if(node.animations[j].getType() == "linear"){
+                        node.animations[j].getMatrix();
+                        //console.log(node.animations[j].getMatrix());
+                    }else if(node.animations[j].getType() == "circular"){
+                        node.animations[j].display();
+                    }
                 }
                 this.displayScene(node.children[i], materialID, textureID);
             this.scene.popMatrix();

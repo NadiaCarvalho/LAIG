@@ -14,7 +14,7 @@ function LinearAnimation(scene, controlPoints, velocity){
 	this.distanceTraveled = [0, 0, 0];
 
 	if(controlPoints.length < 2)
-		console.log("controlPoints is not a valid array");
+		console.log("controlPoints is not a val  array");
 	else
 		this.controlPoints = controlPoints;
 
@@ -104,6 +104,10 @@ LinearAnimation.prototype.getMatrix = function() {
 
 		this.lastTime = date.getTime();
 	}
-	
-	return([this.posX, this.posY, this.posZ]);
+	this.scene.translate(this.posX, this.posY, this.posZ);
+//	return([this.posX, this.posY, this.posZ]);
+}
+
+LinearAnimation.prototype.getType = function() {
+	return "linear";
 }
